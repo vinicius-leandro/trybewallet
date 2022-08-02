@@ -38,7 +38,7 @@ class Login extends React.Component {
 
     if (email.includes('@')
       && email.includes('.com')
-      && password.length === minLengthPassword) {
+      && password.length >= minLengthPassword) {
       this.setState({
         disable: false,
       });
@@ -103,7 +103,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatch: PropTypes.func,
   history: PropTypes.object,
 }.isRequired;
 
