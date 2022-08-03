@@ -25,13 +25,6 @@ const getExpenses = (expenses) => (
   }
 );
 
-export const getValor = (valor) => (
-  {
-    type: GET_VALOR,
-    valor,
-  }
-);
-
 export const fetchingApi = () => async (dispatch) => {
   const response = await fetch(URL);
   const data = await response.json();

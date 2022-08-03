@@ -1,4 +1,4 @@
-import { GET_CURRENCIES, GET_EXPENSES, GET_VALOR } from '../actions';
+import { GET_CURRENCIES, GET_EXPENSES } from '../actions';
 
 const INITIAL_STATE = {
   valor: 0,
@@ -17,11 +17,6 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.expenses],
-    };
-  case GET_VALOR:
-    return {
-      ...state,
-      valor: action.valor,
     };
   default:
     return state;

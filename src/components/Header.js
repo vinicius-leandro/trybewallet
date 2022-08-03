@@ -7,7 +7,6 @@ class Header extends Component {
     const { email, expenses } = this.props;
     const valor = expenses.reduce((acc, curr) => {
       const { value, currency, exchangeRates } = curr;
-      console.log(exchangeRates[currency]);
       return acc + parseFloat(value * exchangeRates[currency].ask);
     }, 0);
     return (
