@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { changeExpenses } from '../redux/actions';
 
 class Table extends Component {
+  handleDeleteButton = (id) => {
+    const { dispatch, expenses } = this.props;
+    const filtredExpenses = expenses.filter((expense) => expense.id !== id);
+    dispatch(changeExpenses(filtredExpenses));
+  }
+
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     return (
       <div>
         <table>
@@ -47,7 +53,15 @@ class Table extends Component {
                       }
                     </td>
                     <td>{expense.currency}</td>
-                    <td>9</td>
+                    <td>
+                      <button
+                        type="submit"
+                        data-testid="delete-btn"
+                        onClick={ () => this.handleDeleteButton(expense.id) }
+                      >
+                        Excluir
+                      </button>
+                    </td>
                   </tr>
                 </tbody>)))
           }

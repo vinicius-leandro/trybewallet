@@ -2,6 +2,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const GET_EXPENSES = 'GET_EXPENSES';
 export const GET_VALOR = 'GET_VALOR';
+export const CHANGE_EXPENSES = 'CHANGE_EXPENSES';
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 export const changeUserEmail = (email) => (
@@ -21,6 +22,13 @@ const getCurrencies = (data) => (
 const getExpenses = (expenses) => (
   {
     type: GET_EXPENSES,
+    expenses,
+  }
+);
+
+export const changeExpenses = (expenses) => (
+  {
+    type: CHANGE_EXPENSES,
     expenses,
   }
 );
