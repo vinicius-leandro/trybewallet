@@ -1,9 +1,9 @@
-import { GET_CURRENCIES, FAILURE_API } from '../actions';
+import { GET_CURRENCIES, GET_EXPENSES, GET_VALOR } from '../actions';
 
 const INITIAL_STATE = {
   valor: 0,
   currencies: [],
-  error: '',
+  expenses: [],
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -13,10 +13,15 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       currencies: action.data,
     };
-  case FAILURE_API:
+  case GET_EXPENSES:
     return {
       ...state,
-      error: action.error,
+      expenses: [...state.expenses, action.expenses],
+    };
+  case GET_VALOR:
+    return {
+      ...state,
+      valor: action.valor,
     };
   default:
     return state;

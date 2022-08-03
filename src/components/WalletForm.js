@@ -1,15 +1,57 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchingApi } from '../redux/actions';
+import { fetchCurrency, fetchingApi } from '../redux/actions';
 
 class WalletForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: '',
+      inputDescription: '',
+      inputCurrency: 'USD',
+      inputMethod: 'Dinheiro',
+      inputTag: 'Alimentação',
+    };
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchingApi());
   }
 
+  clearInputs = () => {
+    this.setState({
+      inputValue: '',
+      inputDescription: '',
+    });
+  }
+
+  handleButtonClick = (event) => {
+    const { inputValue, inputDescription,
+      inputCurrency, inputMethod, inputTag } = this.state;
+    const { dispatch, expenses } = this.props;
+    event.preventDefault();
+    const expense = {
+      id: expenses.length,
+      value: inputValue,
+      description: inputDescription,
+      currency: inputCurrency,
+      method: inputMethod,
+      tag: inputTag,
+    };
+    dispatch(fetchCurrency(expense));
+    this.clearInputs();
+  }
+
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({
+      [name]: value,
+    });
+  }
+
   render() {
+    const { inputValue, inputDescription } = this.state;
     const { currencies } = this.props;
     return (
       <div>
@@ -21,6 +63,9 @@ class WalletForm extends Component {
                 type="number"
                 data-testid="value-input"
                 id="number"
+                name="inputValue"
+                value={ inputValue }
+                onChange={ this.handleChange }
               />
             </label>
           </section>
@@ -32,6 +77,9 @@ class WalletForm extends Component {
                 type="text"
                 data-testid="description-input"
                 id="description"
+                name="inputDescription"
+                value={ inputDescription }
+                onChange={ this.handleChange }
               />
             </label>
           </section>
@@ -40,6 +88,8 @@ class WalletForm extends Component {
             Moedas:
             <select
               data-testid="currency-input"
+              name="inputCurrency"
+              onChange={ this.handleChange }
             >
               {
                 currencies.map((currency) => (
@@ -57,10 +107,12 @@ class WalletForm extends Component {
             Método de pagamento:
             <select
               data-testid="method-input"
+              name="inputMethod"
+              onChange={ this.handleChange }
             >
-              <option value="dinheiro">Dinheiro</option>
-              <option value="credito">Cartão de crédito</option>
-              <option value="debito">Cartão de débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
           </section>
 
@@ -68,13 +120,24 @@ class WalletForm extends Component {
             Categoria:
             <select
               data-testid="tag-input"
+              name="inputTag"
+              onChange={ this.handleChange }
             >
-              <option value="alimentacao">Alimentação</option>
-              <option value="lazer">Lazer</option>
-              <option value="trabalho">Trabalho</option>
-              <option value="transporte">Transporte</option>
-              <option value="saude">Saúde</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saude">Saúde</option>
             </select>
+          </section>
+
+          <section>
+            <button
+              type="submit"
+              onClick={ this.handleButtonClick }
+            >
+              Adicionar despesa
+            </button>
           </section>
 
         </form>
@@ -85,6 +148,7 @@ class WalletForm extends Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 WalletForm.propTypes = {
