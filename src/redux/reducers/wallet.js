@@ -1,9 +1,10 @@
-import { GET_CURRENCIES, GET_EXPENSES, CHANGE_EXPENSES } from '../actions';
+import { GET_CURRENCIES, GET_EXPENSES, CHANGE_EXPENSES, GO_TO_EDIT } from '../actions';
 
 const INITIAL_STATE = {
-  valor: 0,
   currencies: [],
   expenses: [],
+  editor: false,
+  idToEdit: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -22,6 +23,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: action.expenses,
+    };
+  case GO_TO_EDIT:
+    return {
+      ...state,
+      editor: !state.editor,
+      idToEdit: action.id,
     };
   default:
     return state;

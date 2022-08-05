@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeExpenses } from '../redux/actions';
+import { changeExpenses, goToEdit } from '../redux/actions';
 
 class Table extends Component {
   handleDeleteButton = (id) => {
@@ -10,8 +10,13 @@ class Table extends Component {
     dispatch(changeExpenses(filtredExpenses));
   }
 
+  handleEditButton = (id) => {
+    const { dispatch } = this.props;
+    dispatch(goToEdit(id));
+  }
+
   render() {
-    const { expenses } = this.props;
+    const { expenses, editor } = this.props;
     return (
       <div>
         <table>
@@ -54,13 +59,25 @@ class Table extends Component {
                     </td>
                     <td>{expense.currency}</td>
                     <td>
-                      <button
-                        type="submit"
-                        data-testid="delete-btn"
-                        onClick={ () => this.handleDeleteButton(expense.id) }
-                      >
-                        Excluir
-                      </button>
+                      <section>
+                        <button
+                          type="submit"
+                          data-testid="edit-btn"
+                          onClick={ () => this.handleEditButton(expense.id) }
+                        >
+                          { editor ? 'Editanto' : 'Editar' }
+                        </button>
+                      </section>
+
+                      <section>
+                        <button
+                          type="submit"
+                          data-testid="delete-btn"
+                          onClick={ () => this.handleDeleteButton(expense.id) }
+                        >
+                          Excluir
+                        </button>
+                      </section>
                     </td>
                   </tr>
                 </tbody>)))
@@ -73,6 +90,7 @@ class Table extends Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
 });
 
 Table.propTypes = {
